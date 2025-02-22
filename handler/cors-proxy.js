@@ -7,8 +7,13 @@ const agent = new https.Agent({
 });
 // api/proxy.js
 export default async function requestImageResourceHandler(req, res) {
+
+    if (req.path === "/") {
+        return res.status(200).send("CORS Proxy Server is running");
+    }
     // console.log(req); // 打印 req 对象
     console.log(req.method); // 打印请求方法
+
     //代理格式：/https://example.com，然后去掉第一个字符
     const targetUrl = new String(req.path).substring(1); // 请求路径 // 代理的目标 API URL
 
