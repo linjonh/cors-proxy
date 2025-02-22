@@ -6,14 +6,12 @@ const agent = new https.Agent({
     rejectUnauthorized: false, // 忽略 SSL 证书错误
 });
 // api/proxy.js
-export default async function request(req, res) {
+export default async function requestImageResourceHandler(req, res) {
     // console.log(req); // 打印 req 对象
     console.log(req.method); // 打印请求方法
     //代理格式：/https://example.com，然后去掉第一个字符
     const targetUrl = new String(req.path).substring(1); // 请求路径 // 代理的目标 API URL
-    if (!res) {
-        res = new Response();
-    }
+
     // 允许跨域访问的头部
     res.setHeader("Access-Control-Allow-Origin", "*"); // 允许所有源
     res.setHeader(
@@ -29,7 +27,6 @@ export default async function request(req, res) {
     // 检查请求路径是否有效
     if (!req.path || req.path === "/favicon.ico") {
         console.log("======>Invalid request path:" + req.url); // 打印无效请求路径
-
         return res.status(400).json({ error: "Invalid request path" });
     }
     try {
