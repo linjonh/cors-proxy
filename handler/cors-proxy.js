@@ -7,23 +7,21 @@ const agent = new https.Agent({
 });
 // api/proxy.js
 export default async function requestImageResourceHandler(req, res) {
-  // console.log("======>req:",req); // 打印请求对象
+  console.log("======>requestImageResourceHandler:",req.url); // 打印请求对象
   if (req.path === "/") {
     return res.status(200).send("CORS Proxy Server is running");
   }
   req.query = req.query || {}; // 确保 req.query 存在
-  console.log(req.query); // 打印 req 对象
-  console.log(req.method); // 打印请求方法
+    console.log("query:", req.query); // 打印 req 对象
+    // console.log("headers:", req.headers); // 打印 req 对象
+    console.log("method:", req.method); // 打印请求方法
 
   //代理格式：/https://example.com，然后去掉第一个字符
   const targetUrl = new String(req.path).substring(1); // 请求路径 // 代理的目标 API URL
 
   // 允许跨域访问的头部
   res.setHeader("Access-Control-Allow-Origin", "*"); // 允许所有源
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, OPTIONS"
-  );
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
   // 处理 OPTIONS 请求（CORS 预检请求）
@@ -48,12 +46,11 @@ export default async function requestImageResourceHandler(req, res) {
         headers: {
           // 'Authorization': req.headers.authorization,
           "User-Agent": req.headers["user-agent"],
-          "Accept": req.headers["accept"],
+          Accept: req.headers["accept"],
           "Accept-Encoding": req.headers["accept-encoding"],
         },
 
-        body:
-          req.method === "POST" || req.method === "PUT" ? req.body : undefined,
+        body: req.method === "POST" || req.method === "PUT" ? req.body : undefined,
       });
       console.log("======>newReq:"); // 打印新请求对象
       console.log(newReq); // 打印新请求对象
@@ -61,12 +58,11 @@ export default async function requestImageResourceHandler(req, res) {
       // 使用 fetch 转发请求
       console.log("======>fetch:"); // 打印 fetch
 
-        // return startRequest();
-        // return startRequest();
+      // return startRequest();
+      // return startRequest();
 
       // return startRequest();
       //使用新的请求对象
-
 
       const targetResponse = await fetch(targetUrlObj, {
         method: newReq.method,
@@ -112,8 +108,7 @@ function startRequest() {
     method: "GET",
     headers: {
       // "Content-Type": "application/json",
-      "User-Agent":
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
     },
     agent: agent,
   })
