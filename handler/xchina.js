@@ -17,10 +17,10 @@ export default async function meirentuProxy(req, res) {
       return res.status(400).json({ error: "Invalid request path" });
     }
     console.log("targetUrl:", targetUrl);
-
     const targetResponse = await fetch(targetUrl, {
       headers: {
-        accept: "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
+        // accept: "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
+         "accept": "*/*",
         "accept-language": "zh-CN,zh;q=0.9,en;q=0.8,zh-TW;q=0.7",
         "cache-control": "no-cache",
         pragma: "no-cache",
