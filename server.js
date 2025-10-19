@@ -1,6 +1,7 @@
 import express from "express";
 import corsProxy from "./handler/cors-proxy.js";
 import meirentuProxy from "./handler/meirentu.js";
+import xchinaProxy from "./handler/xchina.js";
 import cors from "cors";
 
 const app = express();
@@ -13,6 +14,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // ✅ 路由建议用正则或前缀匹配，而不是 "*/meirentu/*"
 app.all(/\/meirentu\/.*/, meirentuProxy);
+// ✅ 路由建议用正则或前缀匹配，而不是 "*/xchina/*"
+app.all(/\/xchina\/.*/, xchinaProxy);
 
 // ✅ 默认代理所有其他请求
 app.all("*", corsProxy);
